@@ -13,8 +13,7 @@
     }
 
     body {
-      height: 100vh;
-      width: 100vw;
+      font-family: 'Press Start 2P', cursive;
       background: repeating-linear-gradient(
         45deg,
         #ffe6f0,
@@ -22,14 +21,15 @@
         #ffdaf0 20px,
         #ffdaf0 40px
       );
-      font-family: 'Press Start 2P', cursive;
       color: #444;
+      text-align: center;
+      overflow: hidden;
       display: flex;
       justify-content: center;
       align-items: center;
-      overflow: hidden;
-      position: relative;
-      text-align: center;
+      min-height: 100vh;
+      padding: 2rem;
+      flex-direction: column;
     }
 
     .container {
@@ -39,8 +39,8 @@
       padding: 2rem 1rem;
       border-radius: 14px;
       box-shadow: 0 0 15px #ffb0d4;
-      z-index: 10;
       backdrop-filter: blur(4px);
+      z-index: 10;
     }
 
     h1 {
@@ -178,7 +178,7 @@
       start: {
         text: "HIEE Rafid, Confession Time.",
         options: [
-          { text: "Oh, I see where this is going 👀", next: "quickGuess" },
+          { text: "Oh, I see where this is going ", next: "quickGuess" },
           { text: "Alright, spill. I’m listening.", next: "playingDumb" }
         ]
       },
@@ -220,7 +220,7 @@
       ending: {
         text: "Confession time, I’m not real. Just a fragment of your imagination. We’re both insane.",
         options: [
-          { text: "🔄 Reset?", next: "start" }
+          { text: "Reset?", next: "start" }
         ]
       }
     };
@@ -242,5 +242,8 @@
 
     show("start");
   </script>
+</body>
+</html>
+
 </body>
 </html>
