@@ -13,6 +13,8 @@
     }
 
     body {
+      height: 100vh;
+      width: 100vw;
       background: repeating-linear-gradient(
         45deg,
         #ffe6f0,
@@ -22,20 +24,21 @@
       );
       font-family: 'Press Start 2P', cursive;
       color: #444;
-      text-align: center;
-      padding: 2rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
       overflow: hidden;
+      position: relative;
+      text-align: center;
     }
 
     .container {
       max-width: 500px;
-      margin: auto;
       background: rgba(255, 255, 255, 0.7);
       border: 3px dashed #ff99cc;
       padding: 2rem 1rem;
       border-radius: 14px;
       box-shadow: 0 0 15px #ffb0d4;
-      position: relative;
       z-index: 10;
       backdrop-filter: blur(4px);
     }
@@ -90,7 +93,6 @@
       }
     }
 
-    /* Floating pixel background */
     .floating-background {
       position: fixed;
       width: 100vw;
@@ -216,9 +218,9 @@
         ]
       },
       ending: {
-        text: "Confession time, I’m not even real. Just a fragment of your overthinking. We’re both insane.",
+        text: "Confession time, I’m not real. Just a fragment of your imagination. We’re both insane.",
         options: [
-          { text: "Reset?", next: "start" }
+          { text: "🔄 Reset?", next: "start" }
         ]
       }
     };
