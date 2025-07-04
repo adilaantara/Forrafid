@@ -13,23 +13,18 @@
     }
 
     body {
-      height: 100vh;
-      width: 100vw;
-      background: repeating-linear-gradient(
-        45deg,
-        #ffe6f0,
-        #ffe6f0 20px,
-        #ffdaf0 20px,
-        #ffdaf0 40px
-      );
       font-family: 'Press Start 2P', cursive;
+      background: repeating-linear-gradient(45deg, #ffe6f0, #ffe6f0 20px, #ffdaf0 20px, #ffdaf0 40px);
       color: #444;
+      text-align: center;
+      overflow: hidden;
       display: flex;
       justify-content: center;
       align-items: center;
-      overflow: hidden;
-      position: relative;
-      text-align: center;
+      min-height: 100vh;
+      padding: 2rem;
+      flex-direction: column;
+      transition: filter 0.5s ease, background-color 0.5s ease;
     }
 
     .container {
@@ -39,8 +34,8 @@
       padding: 2rem 1rem;
       border-radius: 14px;
       box-shadow: 0 0 15px #ffb0d4;
-      z-index: 10;
       backdrop-filter: blur(4px);
+      z-index: 10;
     }
 
     h1 {
@@ -82,12 +77,10 @@
       body {
         padding: 1rem;
       }
-
       button {
         font-size: 0.55rem;
         padding: 0.9rem;
       }
-
       h1 {
         font-size: 0.9rem;
       }
@@ -141,44 +134,55 @@
         opacity: 0.3;
       }
     }
+
+    .gloom {
+      filter: grayscale(0.5) brightness(0.7);
+      background-color: #99999930;
+      animation: shake 0.4s;
+    }
+
+    @keyframes shake {
+      0% {
+        transform: translate(0, 0);
+      }
+      25% {
+        transform: translate(3px, 0);
+      }
+      50% {
+        transform: translate(-3px, 0);
+      }
+      75% {
+        transform: translate(3px, 0);
+      }
+      100% {
+        transform: translate(0, 0);
+      }
+    }
   </style>
 </head>
 <body>
   <div class="floating-background">
-    <!-- Hearts -->
-    <span class="float heart" style="top: 10%; left: 20%;">♥</span>
-    <span class="float heart" style="top: 25%; left: 80%;">♥</span>
-    <span class="float heart" style="top: 70%; left: 15%;">♥</span>
-    <span class="float heart" style="top: 50%; left: 60%;">♥</span>
-    <span class="float heart" style="top: 35%; left: 30%;">♥</span>
-    <span class="float heart" style="top: 60%; left: 45%;">♥</span>
-    <span class="float heart" style="top: 22%; left: 25%;">♥</span>
-    <span class="float heart" style="top: 48%; left: 65%;">♥</span>
-    <span class="float heart" style="top: 75%; left: 30%;">♥</span>
-    <span class="float heart" style="top: 88%; left: 50%;">♥</span>
-
-    <!-- Schrödinger Equations -->
-    <span class="float eq" style="top: 5%; left: 10%;">i&#8467; ∂ψ/∂t = Ĥψ</span>
-    <span class="float eq" style="top: 65%; left: 85%;">i&#8467; ∂ψ/∂t = Ĥψ</span>
-    <span class="float eq" style="top: 30%; left: 45%;">i&#8467; ∂ψ/∂t = Ĥψ</span>
-    <span class="float eq" style="top: 80%; left: 5%;">i&#8467; ∂ψ/∂t = Ĥψ</span>
-    <span class="float eq" style="top: 15%; left: 70%;">i&#8467; ∂ψ/∂t = Ĥψ</span>
-    <span class="float eq" style="top: 38%; left: 20%;">i&#8467; ∂ψ/∂t = Ĥψ</span>
-    <span class="float eq" style="top: 68%; left: 45%;">i&#8467; ∂ψ/∂t = Ĥψ</span>
-    <span class="float eq" style="top: 82%; left: 75%;">i&#8467; ∂ψ/∂t = Ĥψ</span>
+    <div class="float heart" style="top: 10%; left: 20%;">💖</div>
+    <div class="float heart" style="top: 30%; left: 70%;">💘</div>
+    <div class="float eq" style="top: 60%; left: 50%;">Ψ = Σ cᵢφᵢ</div>
+    <div class="float eq" style="top: 80%; left: 30%;">∇²ψ + k²ψ = 0</div>
+    <div class="float heart" style="top: 40%; left: 80%;">💕</div>
   </div>
-
   <div class="container">
     <h1 id="header">Confession Time.</h1>
     <div class="options" id="options"></div>
   </div>
 
   <script>
+    const header = document.getElementById('header');
+    const optionsDiv = document.getElementById('options');
+    const body = document.body;
+
     const states = {
       start: {
         text: "HIEE Rafid, Confession Time.",
         options: [
-          { text: "Oh, I see where this is going 👀", next: "quickGuess" },
+          { text: "Oh, I see where this is going ", next: "quickGuess" },
           { text: "Alright, spill. I’m listening.", next: "playingDumb" }
         ]
       },
@@ -213,29 +217,95 @@
       confess: {
         text: "Okay, okay. I’m doing it.",
         options: [
-          { text: "Go on.", next: "ending" },
-          { text: "Nothing’s gonna change my mind.", next: "ending" }
+          { text: "Go on.", next: "waterWet" },
+          { text: "Nothing’s gonna change my mind.", next: "waterWet" }
+        ]
+      },
+      waterWet: {
+        text: "Wait serious question: is water wet?",
+        options: [
+          { text: "Yes", next: "waterResponse" },
+          { text: "Hm.. controversial", next: "waterResponse" },
+          { text: "I'm wet", next: "wetJoke" }
+        ]
+      },
+      waterResponse: {
+        text: "Uh yeah I'm not sure.",
+        options: [{ text: "Next", next: "feeling" }]
+      },
+      wetJoke: {
+        text: "WHAT UH UHM ME TOO—WHAT",
+        options: [{ text: "Next", next: "feeling" }]
+      },
+      feeling: {
+        text: "How are you feeling?",
+        options: [
+          { text: "Neutral", next: "okayNoted" },
+          { text: "Curious", next: "okayNoted" },
+          { text: "Annoyed", next: "bearWithMe" }
+        ]
+      },
+      okayNoted: {
+        text: "Okay, noted.",
+        options: [{ text: "Next", next: "creepy" }]
+      },
+      bearWithMe: {
+        text: "I'm sorry, bear with me 😭",
+        options: [{ text: "Next", next: "creepy" }]
+      },
+      creepy: {
+        text: "Do you think I’m creepy?",
+        options: [
+          { text: "The creepiest person I met", next: "sorryDirect" },
+          { text: "No.. a bit annoying", next: "sorryDirect" },
+          { text: "You're good it's okay", next: "relief" }
+        ]
+      },
+      sorryDirect: {
+        text: "I'm sorry... please tell me directly if u actually feel this way.",
+        options: [{ text: "Next", next: "finalConfess" }]
+      },
+      relief: {
+        text: "OMG REALLY? I THOUGHT I WAS BEING CREEPY AND ANNOYING",
+        options: [{ text: "Next", next: "finalConfess" }]
+      },
+      finalConfess: {
+        text: "Okay I know you are getting impatient, I'll finally confess now...",
+        options: [
+          { text: "Yes it's getting annoying", next: "ending" },
+          { text: "Dw just say it, I know what you're gonna say", next: "ending" },
+          { text: "Finally geez", next: "ending" }
         ]
       },
       ending: {
-        text: "Confession time, I’m not real. Just a fragment of your imagination. We’re both insane.",
-        options: [
-          { text: "🔄 Reset?", next: "start" }
-        ]
+        text: "Confession time: I’m not actually real. Just a fragment of your imagination. We’re both insane.",
+        options: [{ text: "Reset?", next: "start" }]
       }
     };
-
-    const header = document.getElementById('header');
-    const optionsDiv = document.getElementById('options');
 
     function show(stateKey) {
       const state = states[stateKey];
       header.textContent = state.text;
       optionsDiv.innerHTML = '';
+
+      if (stateKey === "reset") {
+        location.reload();
+        return;
+      }
+
       state.options.forEach(opt => {
         const btn = document.createElement('button');
         btn.textContent = opt.text;
-        btn.onclick = () => show(opt.next);
+        btn.onclick = () => {
+          if (
+            stateKey === "creepy" &&
+            (opt.text.includes("creepiest") || opt.text.includes("annoying"))
+          ) {
+            body.classList.add('gloom');
+            setTimeout(() => body.classList.remove('gloom'), 600);
+          }
+          show(opt.next);
+        };
         optionsDiv.appendChild(btn);
       });
     }
@@ -244,3 +314,4 @@
   </script>
 </body>
 </html>
+
