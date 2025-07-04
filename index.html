@@ -16,6 +16,7 @@
       align-items: center;
       height: 100vh;
       overflow: hidden;
+      position: relative;
     }
 
     .container {
@@ -28,6 +29,7 @@
       box-shadow: 0 0 20px #ffb3e6;
       text-align: center;
       animation: floatIn 1s ease;
+      z-index: 2;
     }
 
     @keyframes floatIn {
@@ -70,9 +72,29 @@
       pointer-events: none;
       z-index: 99;
     }
+
+    /* Gloomy overlay */
+    .gloomy-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.5);
+      opacity: 0;
+      transition: opacity 0.6s ease;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .gloomy-active {
+      opacity: 1;
+    }
   </style>
 </head>
 <body>
+  <div class="gloomy-overlay" id="gloom"></div>
+
   <div class="container">
     <div id="dialogue">I'm sorry... please tell me directly if you actually feel this way.</div>
     <div class="options" id="options">
@@ -83,6 +105,7 @@
   <script>
     const dialogueBox = document.getElementById('dialogue');
     const optionsBox = document.getElementById('options');
+    const gloom = document.getElementById('gloom');
 
     const steps = [
       {
@@ -109,6 +132,14 @@
     let currentStep = 0;
 
     function nextStep(optionIndex) {
+      // Trigger gloomy effect only if mean choice is picked
+      if (currentStep === 2 && optionIndex === 0) {
+        gloom.classList.add('gloomy-active');
+        setTimeout(() => {
+          gloom.classList.remove('gloomy-active');
+        }, 1200);
+      }
+
       currentStep++;
       const step = steps[currentStep];
 
