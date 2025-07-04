@@ -7,26 +7,15 @@
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
 
-    * {
-      box-sizing: border-box;
-    }
-
     body {
       margin: 0;
+      background: url('https://i.ibb.co/nkDGdd2/pixel-heart-bg.gif') repeat;
       font-family: 'Press Start 2P', cursive;
-      background: repeating-linear-gradient(
-        45deg,
-        #ffd5ec,
-        #ffd5ec 20px,
-        #ffeaf5 20px,
-        #ffeaf5 40px
-      );
       display: flex;
       justify-content: center;
       align-items: center;
       height: 100vh;
       overflow: hidden;
-      position: relative;
     }
 
     .container {
@@ -38,8 +27,7 @@
       max-width: 500px;
       box-shadow: 0 0 20px #ffb3e6;
       text-align: center;
-      z-index: 2;
-      animation: floatIn 0.8s ease;
+      animation: floatIn 1s ease;
     }
 
     @keyframes floatIn {
@@ -48,7 +36,7 @@
     }
 
     #dialogue {
-      font-size: 12px;
+      font-size: 14px;
       line-height: 1.6;
       color: #333;
       margin-bottom: 20px;
@@ -73,47 +61,18 @@
       background: #ffcef0;
     }
 
-    .gloomy-overlay {
+    .confetti {
       position: fixed;
       top: 0;
       left: 0;
       width: 100vw;
       height: 100vh;
-      background: rgba(0, 0, 0, 0.5);
-      opacity: 0;
       pointer-events: none;
-      z-index: 1;
-      transition: opacity 0.6s ease;
-    }
-
-    .gloomy-active {
-      opacity: 1;
-    }
-
-    .confetti-piece {
-      position: fixed;
-      width: 8px;
-      height: 8px;
-      background: pink;
-      z-index: 999;
-      animation: fall 2s linear infinite;
-    }
-
-    @keyframes fall {
-      0% {
-        transform: translateY(-10px) rotate(0deg);
-        opacity: 1;
-      }
-      100% {
-        transform: translateY(100vh) rotate(360deg);
-        opacity: 0;
-      }
+      z-index: 99;
     }
   </style>
 </head>
 <body>
-  <div class="gloomy-overlay" id="gloom"></div>
-
   <div class="container">
     <div id="dialogue">I'm sorry... please tell me directly if you actually feel this way.</div>
     <div class="options" id="options">
@@ -124,7 +83,6 @@
   <script>
     const dialogueBox = document.getElementById('dialogue');
     const optionsBox = document.getElementById('options');
-    const gloom = document.getElementById('gloom');
 
     const steps = [
       {
@@ -151,12 +109,9 @@
     let currentStep = 0;
 
     function nextStep(optionIndex) {
-      if (currentStep === 2 && optionIndex === 0) {
-        triggerGloomyEffect();
-      }
-
       currentStep++;
       const step = steps[currentStep];
+
       if (!step) return;
 
       dialogueBox.innerText = step.text;
@@ -172,35 +127,18 @@
         });
       } else {
         optionsBox.innerHTML = '';
-        launchConfetti();
+        launchConfetti(); // 🎉 Add confetti when confession appears
       }
-    }
-
-    function triggerGloomyEffect() {
-      gloom.classList.add('gloomy-active');
-      setTimeout(() => {
-        gloom.classList.remove('gloomy-active');
-      }, 1200);
     }
 
     function launchConfetti() {
-      for (let i = 0; i < 30; i++) {
-        const confetti = document.createElement('div');
-        confetti.className = 'confetti-piece';
-        confetti.style.left = Math.random() * 100 + 'vw';
-        confetti.style.background = randomColor();
-        confetti.style.animationDuration = (1 + Math.random() * 2) + 's';
-        document.body.appendChild(confetti);
-
-        setTimeout(() => {
-          confetti.remove();
-        }, 3000);
-      }
-    }
-
-    function randomColor() {
-      const colors = ['#ff6bcb', '#ffb3e6', '#ff8be3', '#ffc9f0', '#ff99dd'];
-      return colors[Math.floor(Math.random() * colors.length)];
+      const confetti = document.createElement('div');
+      confetti.className = 'confetti';
+      confetti.innerHTML = `
+        <img src="https://i.ibb.co/6WvkP8n/pixel-heart.png" style="width:30px; position:absolute; top:20%; left:40%; animation:bounce 2s infinite;">
+        <img src="https://i.ibb.co/6WvkP8n/pixel-heart.png" style="width:30px; position:absolute; top:60%; left:60%; animation:bounce 2s infinite reverse;">
+      `;
+      document.body.appendChild(confetti);
     }
   </script>
 </body>
