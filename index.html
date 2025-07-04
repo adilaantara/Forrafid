@@ -16,7 +16,6 @@
       align-items: center;
       height: 100vh;
       overflow: hidden;
-      position: relative;
     }
 
     .container {
@@ -29,7 +28,6 @@
       box-shadow: 0 0 20px #ffb3e6;
       text-align: center;
       animation: floatIn 1s ease;
-      z-index: 2;
     }
 
     @keyframes floatIn {
@@ -72,27 +70,9 @@
       pointer-events: none;
       z-index: 99;
     }
-
-    .gloomy-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      background: rgba(0, 0, 0, 0.5);
-      z-index: 1;
-      opacity: 0;
-      transition: opacity 0.5s ease;
-      pointer-events: none;
-    }
-
-    .gloomy-active {
-      opacity: 1;
-    }
   </style>
 </head>
 <body>
-  <div class="gloomy-overlay" id="gloom"></div>
   <div class="container">
     <div id="dialogue">I'm sorry... please tell me directly if you actually feel this way.</div>
     <div class="options" id="options">
@@ -103,7 +83,6 @@
   <script>
     const dialogueBox = document.getElementById('dialogue');
     const optionsBox = document.getElementById('options');
-    const gloom = document.getElementById('gloom');
 
     const steps = [
       {
@@ -130,11 +109,6 @@
     let currentStep = 0;
 
     function nextStep(optionIndex) {
-      // Check if the current step is the impatient options
-      if (currentStep === 2 && optionIndex === 0) {
-        triggerGloomyEffect();
-      }
-
       currentStep++;
       const step = steps[currentStep];
 
@@ -153,15 +127,8 @@
         });
       } else {
         optionsBox.innerHTML = '';
-        launchConfetti(); // 🎉
+        launchConfetti(); // 🎉 Add confetti when confession appears
       }
-    }
-
-    function triggerGloomyEffect() {
-      gloom.classList.add('gloomy-active');
-      setTimeout(() => {
-        gloom.classList.remove('gloomy-active');
-      }, 1200);
     }
 
     function launchConfetti() {
