@@ -86,32 +86,30 @@
       }
     }
 
-    .floating-background {
-      position: fixed;
-      width: 100vw;
-      height: 100vh;
-      top: 0;
-      left: 0;
-      pointer-events: none;
-      overflow: hidden;
-      z-index: 1;
-    }
+   <div class="floating-background">
+  <!-- Hearts -->
+  <div class="float heart" style="top: 5%; left: 10%;">💖</div>
+  <div class="float heart" style="top: 12%; left: 65%;">💘</div>
+  <div class="float heart" style="top: 25%; left: 80%;">💕</div>
+  <div class="float heart" style="top: 40%; left: 15%;">💝</div>
+  <div class="float heart" style="top: 52%; left: 50%;">💗</div>
+  <div class="float heart" style="top: 62%; left: 75%;">💞</div>
+  <div class="float heart" style="top: 75%; left: 25%;">💓</div>
+  <div class="float heart" style="top: 85%; left: 60%;">💟</div>
+  <div class="float heart" style="top: 92%; left: 35%;">💘</div>
 
-    .float {
-      position: absolute;
-      font-size: 1.2rem;
-      opacity: 0.4;
-      animation: floatUpDown 14s ease-in-out infinite;
-      text-shadow: 0 0 4px rgba(255, 255, 255, 0.7);
-      user-select: none;
-      white-space: nowrap;
-    }
+  <!-- Schrödinger Equations -->
+  <div class="float eq" style="top: 8%; left: 45%;">Ψ = Σ cᵢφᵢ</div>
+  <div class="float eq" style="top: 18%; left: 20%;">∇²ψ + k²ψ = 0</div>
+  <div class="float eq" style="top: 33%; left: 70%;">iħ ∂ψ/∂t = Ĥψ</div>
+  <div class="float eq" style="top: 48%; left: 35%;">E = ħω</div>
+  <div class="float eq" style="top: 58%; left: 85%;">HΨ = EΨ</div>
+  <div class="float eq" style="top: 68%; left: 60%;">Δx Δp ≥ ħ/2</div>
+  <div class="float eq" style="top: 78%; left: 30%;">ψ(x,t) = Ae^{i(kx−ωt)}</div>
+  <div class="float eq" style="top: 88%; left: 15%;">∫ |ψ|² dx = 1</div>
+  <div class="float eq" style="top: 95%; left: 50%;">Ĥ = −(ħ²/2m)∇² + V</div>
+</div>
 
-    .heart {
-      color: #ff6ebd;
-      font-size: 1.2rem;
-      text-shadow: 1px 1px 0 #ffb6e6;
-    }
 
     .eq {
       color: #c190ff;
