@@ -7,11 +7,20 @@
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
 
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       margin: 0;
       font-family: 'Press Start 2P', cursive;
-      background: url('https://i.ibb.co/nkDGdd2/pixel-heart-bg.gif') repeat;
-      background-size: contain;
+      background: repeating-linear-gradient(
+        45deg,
+        #ffd5ec,
+        #ffd5ec 20px,
+        #ffeaf5 20px,
+        #ffeaf5 40px
+      );
       display: flex;
       justify-content: center;
       align-items: center;
@@ -39,7 +48,7 @@
     }
 
     #dialogue {
-      font-size: 14px;
+      font-size: 12px;
       line-height: 1.6;
       color: #333;
       margin-bottom: 20px;
@@ -64,17 +73,6 @@
       background: #ffcef0;
     }
 
-    .confetti {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      pointer-events: none;
-      z-index: 99;
-    }
-
-    /* Gloomy effect */
     .gloomy-overlay {
       position: fixed;
       top: 0;
@@ -90,6 +88,26 @@
 
     .gloomy-active {
       opacity: 1;
+    }
+
+    .confetti-piece {
+      position: fixed;
+      width: 8px;
+      height: 8px;
+      background: pink;
+      z-index: 999;
+      animation: fall 2s linear infinite;
+    }
+
+    @keyframes fall {
+      0% {
+        transform: translateY(-10px) rotate(0deg);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(100vh) rotate(360deg);
+        opacity: 0;
+      }
     }
   </style>
 </head>
@@ -133,12 +151,8 @@
     let currentStep = 0;
 
     function nextStep(optionIndex) {
-      // If a mean option was chosen, activate gloomy
       if (currentStep === 2 && optionIndex === 0) {
-        gloom.classList.add('gloomy-active');
-        setTimeout(() => {
-          gloom.classList.remove('gloomy-active');
-        }, 1300); // fades away before next dialogue
+        triggerGloomyEffect();
       }
 
       currentStep++;
@@ -162,14 +176,31 @@
       }
     }
 
+    function triggerGloomyEffect() {
+      gloom.classList.add('gloomy-active');
+      setTimeout(() => {
+        gloom.classList.remove('gloomy-active');
+      }, 1200);
+    }
+
     function launchConfetti() {
-      const confetti = document.createElement('div');
-      confetti.className = 'confetti';
-      confetti.innerHTML = `
-        <img src="https://i.ibb.co/6WvkP8n/pixel-heart.png" style="width:30px; position:absolute; top:20%; left:40%; animation:bounce 2s infinite;">
-        <img src="https://i.ibb.co/6WvkP8n/pixel-heart.png" style="width:30px; position:absolute; top:60%; left:60%; animation:bounce 2s infinite reverse;">
-      `;
-      document.body.appendChild(confetti);
+      for (let i = 0; i < 30; i++) {
+        const confetti = document.createElement('div');
+        confetti.className = 'confetti-piece';
+        confetti.style.left = Math.random() * 100 + 'vw';
+        confetti.style.background = randomColor();
+        confetti.style.animationDuration = (1 + Math.random() * 2) + 's';
+        document.body.appendChild(confetti);
+
+        setTimeout(() => {
+          confetti.remove();
+        }, 3000);
+      }
+    }
+
+    function randomColor() {
+      const colors = ['#ff6bcb', '#ffb3e6', '#ff8be3', '#ffc9f0', '#ff99dd'];
+      return colors[Math.floor(Math.random() * colors.length)];
     }
   </script>
 </body>
