@@ -1,196 +1,264 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Confession Game</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Confession Time 💌</title>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet" />
   <style>
-    /* Pixel-style fallback font */
-    body {
+    * {
       margin: 0;
-      font-family: monospace;
-      background:
-        linear-gradient(45deg, #ffddee 25%, transparent 25%),
-        linear-gradient(-45deg, #ffddee 25%, transparent 25%),
-        linear-gradient(45deg, transparent 75%, #ffeaf5 75%),
-        linear-gradient(-45deg, transparent 75%, #ffeaf5 75%);
-      background-size: 40px 40px;
-      background-position: 0 0, 0 20px, 20px -20px, -20px 0px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      overflow: hidden;
-      position: relative;
+      padding: 0;
+      box-sizing: border-box;
     }
-
-    .container {
-      background: rgba(255, 255, 255, 0.85);
-      border: 4px dashed #ff6bcb;
-      border-radius: 20px;
-      padding: 30px;
-      width: 90%;
-      max-width: 500px;
-      box-shadow: 0 0 20px #ffb3e6;
+    body {
+      background: repeating-linear-gradient(45deg, #ffe6f0, #ffe6f0 20px, #ffdaf0 20px, #ffdaf0 40px);
+      font-family: 'Press Start 2P', cursive;
+      color: #444;
       text-align: center;
-      z-index: 2;
-      animation: floatIn 0.8s ease;
+      padding: 2rem;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
     }
-
-    @keyframes floatIn {
-      from { transform: scale(0.9); opacity: 0; }
-      to { transform: scale(1); opacity: 1; }
+    .container {
+      max-width: 500px;
+      background: rgba(255, 255, 255, 0.75);
+      border: 3px dashed #ff99cc;
+      padding: 2rem 1rem;
+      border-radius: 14px;
+      box-shadow: 0 0 15px #ffb0d4;
+      position: relative;
+      z-index: 10;
+      backdrop-filter: blur(4px);
     }
-
-    #dialogue {
-      font-size: 14px;
-      line-height: 1.6;
-      color: #333;
-      margin-bottom: 20px;
+    h1 {
+      font-size: 1rem;
+      margin-bottom: 2rem;
+      color: #cc2c78;
+      text-shadow: 1px 1px 0 #fff;
     }
-
     .options {
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 1rem;
     }
-
-    .option {
-      background: #ffe4f2;
-      border: 2px solid #ff6bcb;
+    button {
+      background: #ffb6e6;
+      border: none;
+      padding: 1rem;
       border-radius: 10px;
-      padding: 10px;
+      font-size: 0.7rem;
+      font-family: 'Press Start 2P', cursive;
       cursor: pointer;
       transition: all 0.2s ease;
+      box-shadow: 0 4px #cc78aa;
     }
-
-    .option:hover {
-      background: #ffcef0;
+    button:hover {
+      transform: translateY(-2px);
+      background: #ffd4ef;
     }
-
-    /* Gloomy overlay */
-    .gloomy-overlay {
+    button:active {
+      box-shadow: 0 2px #cc78aa;
+      transform: translateY(2px);
+    }
+    @media (max-width: 500px) {
+      body {
+        padding: 1rem;
+      }
+      button {
+        font-size: 0.55rem;
+        padding: 0.9rem;
+      }
+      h1 {
+        font-size: 0.9rem;
+      }
+    }
+    .floating-background {
       position: fixed;
-      top: 0;
-      left: 0;
       width: 100vw;
       height: 100vh;
-      background: rgba(0, 0, 0, 0.5);
-      opacity: 0;
+      top: 0;
+      left: 0;
       pointer-events: none;
+      overflow: hidden;
       z-index: 1;
-      transition: opacity 0.6s ease;
     }
-
-    .gloomy-active {
-      opacity: 1;
+    .float {
+      position: absolute;
+      font-size: 1.2rem;
+      opacity: 0.4;
+      animation: floatUpDown 14s ease-in-out infinite;
+      text-shadow: 0 0 4px rgba(255, 255, 255, 0.7);
+      user-select: none;
+      white-space: nowrap;
     }
-
-    /* Confetti */
     .heart {
-      position: fixed;
-      font-size: 16px;
-      color: #ff6bcb;
-      animation: fall 2.5s linear;
-      z-index: 99;
-      pointer-events: none;
+      color: #ff6ebd;
+      text-shadow: 1px 1px 0 #ffb6e6;
     }
-
-    @keyframes fall {
-      0% {
-        transform: translateY(-20px) rotate(0deg);
-        opacity: 1;
-      }
-      100% {
-        transform: translateY(100vh) rotate(360deg);
-        opacity: 0;
-      }
+    .eq {
+      color: #c190ff;
+      font-size: 0.8rem;
+      font-weight: bold;
+      text-shadow: 0 0 6px rgba(195, 160, 255, 0.8);
+    }
+    @keyframes floatUpDown {
+      0% { transform: translateY(0px) rotate(0deg); opacity: 0.3; }
+      50% { transform: translateY(-20px) rotate(3deg); opacity: 0.7; }
+      100% { transform: translateY(0px) rotate(0deg); opacity: 0.3; }
     }
   </style>
 </head>
 <body>
-  <div class="gloomy-overlay" id="gloom"></div>
+  <div class="floating-background">
+    <!-- ♥ Hearts ♥ -->
+    <span class="float heart" style="top: 10%; left: 20%;">♥</span>
+    <span class="float heart" style="top: 25%; left: 80%;">♥</span>
+    <span class="float heart" style="top: 70%; left: 15%;">♥</span>
+    <span class="float heart" style="top: 50%; left: 60%;">♥</span>
+    <span class="float heart" style="top: 35%; left: 30%;">♥</span>
+    <span class="float heart" style="top: 60%; left: 45%;">♥</span>
+    <span class="float heart" style="top: 22%; left: 25%;">♥</span>
+    <span class="float heart" style="top: 48%; left: 65%;">♥</span>
+    <span class="float heart" style="top: 75%; left: 30%;">♥</span>
+    <span class="float heart" style="top: 88%; left: 50%;">♥</span>
+
+    <!-- ⚛ Schrödinger Equations ⚛ -->
+    <span class="float eq" style="top: 5%; left: 10%;">i&#8467; ∂ψ/∂t = Ĥψ</span>
+    <span class="float eq" style="top: 65%; left: 85%;">i&#8467; ∂ψ/∂t = Ĥψ</span>
+    <span class="float eq" style="top: 30%; left: 45%;">i&#8467; ∂ψ/∂t = Ĥψ</span>
+    <span class="float eq" style="top: 80%; left: 5%;">i&#8467; ∂ψ/∂t = Ĥψ</span>
+    <span class="float eq" style="top: 15%; left: 70%;">i&#8467; ∂ψ/∂t = Ĥψ</span>
+    <span class="float eq" style="top: 38%; left: 20%;">i&#8467; ∂ψ/∂t = Ĥψ</span>
+    <span class="float eq" style="top: 68%; left: 45%;">i&#8467; ∂ψ/∂t = Ĥψ</span>
+    <span class="float eq" style="top: 82%; left: 75%;">i&#8467; ∂ψ/∂t = Ĥψ</span>
+  </div>
 
   <div class="container">
-    <div id="dialogue">I'm sorry... please tell me directly if you actually feel this way.</div>
-    <div class="options" id="options">
-      <div class="option" onclick="nextStep(1)">Reset?</div>
-    </div>
+    <h1 id="header">Confession Time.</h1>
+    <div class="options" id="options"></div>
   </div>
 
   <script>
-    const dialogueBox = document.getElementById('dialogue');
-    const optionsBox = document.getElementById('options');
-    const gloom = document.getElementById('gloom');
-
-    const steps = [
-      {
-        text: "I'm sorry... please tell me directly if you actually feel this way.",
-        options: ["Reset?"]
-      },
-      {
-        text: "OMG REALLY? I THOUGHT I WAS BEING CREEPY AND ANNOYING",
-        options: ["..."]
-      },
-      {
-        text: "Okay, I know you're getting impatient... I'll finally confess now.",
+    const states = {
+      start: {
+        text: "HIEE Rafid, Confession Time.",
         options: [
-          "Yes, it's getting annoying.",
-          "DW just say it, I know what you're gonna say.",
-          "Finally, geez."
+          { text: "Oh, I see where this is going ", next: "quickGuess" },
+          { text: "Alright, spill. I’m listening.", next: "playingDumb" }
         ]
       },
-      {
-        text: "Confession time: I'm not actually real... I'm just a string of code written to love you in pixels 💗"
+      quickGuess: {
+        text: "You’re quick. So what exactly do you think it is?",
+        options: [
+          { text: "You’re into me.", next: "eager" },
+          { text: "Say it out loud.", next: "impatient" }
+        ]
+      },
+      playingDumb: {
+        text: "Do you really not know, or are you playing dumb?",
+        options: [
+          { text: "I might know, but I’m not saying.", next: "eager" },
+          { text: "I seriously don’t know.", next: "impatient" }
+        ]
+      },
+      eager: {
+        text: "You could be right, you could be wrong… idk.",
+        options: [
+          { text: "Just admit it already.", next: "confess" },
+          { text: "Bro, you’re delulu fr.", next: "confess" }
+        ]
+      },
+      impatient: {
+        text: "Impatient much? Fine, I’ll say it.",
+        options: [
+          { text: "Finally, geez.", next: "confess" },
+          { text: "Spit it out already.", next: "confess" }
+        ]
+      },
+      confess: {
+        text: "Okay, okay. I’m doing it.",
+        options: [
+          { text: "Go on.", next: "finalConfess" },
+          { text: "Nothing’s gonna change my mind.", next: "finalConfess" }
+        ]
+      },
+      finalConfess: {
+        text: "Okay, I'm finally confessing now...",
+        options: [
+          { text: "PLEASE DO IT FINALLY!", next: "wetQuestion" },
+          { text: "do it but nothing's gonna change my mind I'm not interested in u", next: "wetQuestion" }
+        ]
+      },
+      wetQuestion: {
+        text: "okay serious question: is water wet?",
+        options: [
+          { text: "yes", next: "wetResponse" },
+          { text: "hm.. controversial", next: "wetResponse" },
+          { text: "I'm wet", next: "wetResponseWet" }
+        ]
+      },
+      wetResponse: {
+        text: "uh yeah I'm not sure.",
+        options: [ { text: "Next", next: "feelingQuestion" } ]
+      },
+      wetResponseWet: {
+        text: "WHAT UH UHM ME TOO-WHAT",
+        options: [ { text: "Next", next: "feelingQuestion" } ]
+      },
+      feelingQuestion: {
+        text: "how are you feeling?",
+        options: [
+          { text: "neutral", next: "noted" },
+          { text: "curious", next: "noted" },
+          { text: "annoyed", next: "sorryBear" }
+        ]
+      },
+      noted: {
+        text: "okay, noted.",
+        options: [ { text: "Next", next: "creepyQuestion" } ]
+      },
+      sorryBear: {
+        text: "I'm sorry bear with me 😭",
+        options: [ { text: "Next", next: "creepyQuestion" } ]
+      },
+      creepyQuestion: {
+        text: "do u think I'm creepy?",
+        options: [
+          { text: "The creepiest person I met", next: "creepyApology" },
+          { text: "no.. a bit annoying", next: "creepyApology" },
+          { text: "you're good it's okay", next: "creepyRelief" }
+        ]
+      },
+      creepyApology: {
+        text: "I'm sorry... please tell me directly if u actually feel this way.",
+        options: [ { text: "Reset?", next: "start" } ]
+      },
+      creepyRelief: {
+        text: "OMG REALLY? I THOUGHT I WAS BEING CREEPY AND ANNOYING",
+        options: [ { text: "Reset?", next: "start" } ]
       }
-    ];
+    };
 
-    let currentStep = 0;
+    const header = document.getElementById('header');
+    const optionsDiv = document.getElementById('options');
 
-    function nextStep(optionIndex) {
-      if (currentStep === 2 && optionIndex === 0) {
-        gloom.classList.add('gloomy-active');
-        setTimeout(() => {
-          gloom.classList.remove('gloomy-active');
-        }, 1200);
-      }
-
-      currentStep++;
-      const step = steps[currentStep];
-
-      if (!step) return;
-
-      dialogueBox.innerText = step.text;
-
-      if (step.options) {
-        optionsBox.innerHTML = '';
-        step.options.forEach((opt, index) => {
-          const btn = document.createElement('div');
-          btn.className = 'option';
-          btn.innerText = opt;
-          btn.onclick = () => nextStep(index);
-          optionsBox.appendChild(btn);
-        });
-      } else {
-        optionsBox.innerHTML = '';
-        launchConfetti();
-      }
+    function show(stateKey) {
+      const state = states[stateKey];
+      header.textContent = state.text;
+      optionsDiv.innerHTML = '';
+      state.options.forEach(opt => {
+        const btn = document.createElement('button');
+        btn.textContent = opt.text;
+        btn.onclick = () => show(opt.next);
+        optionsDiv.appendChild(btn);
+      });
     }
 
-    function launchConfetti() {
-      for (let i = 0; i < 30; i++) {
-        const heart = document.createElement('div');
-        heart.className = 'heart';
-        heart.innerText = '💖';
-        heart.style.left = Math.random() * 100 + 'vw';
-        heart.style.animationDuration = (1.5 + Math.random() * 1.5) + 's';
-        document.body.appendChild(heart);
-
-        setTimeout(() => {
-          heart.remove();
-        }, 3000);
-      }
-    }
+    show("start");
   </script>
 </body>
 </html>
